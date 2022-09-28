@@ -57,14 +57,14 @@ On the Slave:
 
 
 //Logged into Jenkins Server in GUI
-Add node
+Add node (agent)
 Configure: fill out everything except
                   Launch method:
 		Launch agent via execution of command on the controller
 	      Launch command:
 		Ssh root@remoteIP java -jar /root/bin/slave.jar
 
-Test slave node 
+Verify & test slave node 
 
 
 ***Note: if there is agent connection issue with SSH-key host not connected…
@@ -73,4 +73,3 @@ Make sure from Slave server to copy
 
 Paste into Master
 #vi /var/lib/Jenkins/.ssh/known_hosts ----file
-
