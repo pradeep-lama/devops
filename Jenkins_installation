@@ -1,0 +1,76 @@
+Installing Jenkins on Cenots 7 or 9
+******************************************
+
+//Update CentOS and add repo
+#sudo yum update
+#sudo yum install wget
+#sudo wget -O /etc/yum.repos.d/Jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+#sudo rpm –import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+
+//Install Java 
+#sudo yum java -version
+#sudo yum install java-11-open*
+
+//Install Jenkins
+#sudo yum install Jenkins -y
+#sudo yum upgrade
+
+#sudo systemctl enable Jenkins
+#sudo systemctl start Jenkins
+#sudo systemctl status Jenkins
+
+//Enable firewall port
+#firewall-cmd –zone=public –add-port=8080/tcp –permanent
+#firewall-cmd –zone=public –add-service=http –permanet
+#firewall-cmd --reload
+
+//Make sure jenkins folder has permission to read
+#sudo chmod -R 755 /var/lib/jenkins
+
+#cd /var/lib/jenkins/secrets
+#cat initialAdminPassword
+
+//Copy admin password when logging Jenkins for the first time>
+
+//All Jenkins installation files are installed 
+#/var/lib/Jenkins
+
+//Steps to configure Slave node:
+************************************
+//From Master node:
+#su – jenkins
+#su -s /bin/bash jenkins
+
+Once logged in as Jenkins user in Master node:
+-----------------------------------------------
+#ssh-keygen -t rsa
+#cat /var/lib/Jenkins/.ssh/id_rsa.pub | ssh root@slavenodeIP ‘cat >> .ssh/authorized_keys’
+
+//Verify ssh into remote from master without password
+#ssh root@slavenodeIP         ---make sure it should logged in without password
+
+On the Slave: 
+----------------
+#mkdir ~/bin
+#wget http://Jenkins_server_IP:8080/jnlpJars/slave.jar
+#yum install java-1.11. --------whichever version was installed in Jenkins Master or controller
+
+
+//Logged into Jenkins Server in GUI
+Add node
+Configure: fill out everything except
+                  Launch method:
+		Launch agent via execution of command on the controller
+	      Launch command:
+		Ssh root@remoteIP java -jar /root/bin/slave.jar
+
+Test slave node 
+
+
+***Note: if there is agent connection issue with SSH-key host not connected…
+Make sure from Slave server to copy
+#cat /etc/ssh/ssh_host_ecdsa_key.pub ---copy 
+
+Paste into Master
+#vi /var/lib/Jenkins/.ssh/known_hosts ----file
+
